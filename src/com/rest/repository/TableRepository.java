@@ -1,0 +1,41 @@
+package com.rest.repository;
+import com.rest.models.Table;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TableRepository {
+    private final List<Table> tables = new ArrayList<>();
+
+    public TableRepository() {
+        tables.add(new Table(1, 2));
+        tables.add(new Table(2, 4));
+        tables.add(new Table(3, 6));
+    }
+
+    public List<Table> findAll() {
+        return tables;
+    }
+
+    public Table findById(int id) {
+        for (Table table : tables) {
+            if (table.getId() == id) {
+                return table;
+            }
+        }
+        return null;
+    }
+
+    public boolean updateTableStatus(int id, Table.Availability status) {
+        Table table = findById(id);
+        if (table == null) {
+            return false;
+        }
+
+        if (status == Table.Availability.FREE) {
+            table.freeTable();
+        } else if (status == Table.Availability.OCCUPY) {
+            table.occupyTable();
+        }
+        return true;
+    }
+}
